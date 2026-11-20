@@ -1,6 +1,6 @@
 {
   "name": "arch-pilot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "AI 时代零基础架构思维与工程总控开源指南（结构化知识库 + 3 合 1 AI 陪学套件）",
@@ -10,8 +10,9 @@
     "docs:preview": "vitepress preview docs",
     "check:sanitize": "python3 scripts/check_sanitization.py",
     "check:sync": "python3 scripts/check_prompt_sync.py",
+    "check:readability": "python3 scripts/check_readability_gate.py",
     "test:scripts": "python3 -m unittest discover -s tests -p 'test_*.py'",
-    "check:all": "npm run check:sanitize && npm run check:sync && npm run test:scripts && npm run docs:build"
+    "check:all": "npm run check:sanitize && npm run check:sync && npm run check:readability && npm run test:scripts && npm run docs:build"
   },
   "devDependencies": {
     "mermaid": "^11.4.1",

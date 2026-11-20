@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit and regression tests for ArchPilot CI quality gates."""
+"""Unit and regression tests for ArchPilot CI quality gates (GATE-01..05)."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 import check_prompt_sync  # noqa: E402
+import check_readability_gate  # noqa: E402
 import check_sanitization  # noqa: E402
 
 
@@ -88,12 +89,12 @@ class SanitizationGateTests(unittest.TestCase):
 
 
 class PromptSyncGateTests(unittest.TestCase):
-    def _create_valid_kits(self, root: Path, *, skill_version: str = "0.1.0") -> None:
+    def _create_valid_kits(self, root: Path, *, skill_version: str = "1.0.0") -> None:
         (root / "prompts").mkdir(parents=True)
         (root / "docs" / "ai-kit").mkdir(parents=True)
         for kit_id, slug in check_prompt_sync.KIT_SPECS:
             (root / "prompts" / f"{kit_id}.prompt.md").write_text(
-                f'---\nid: {kit_id}\nversion: "0.1.0"\n---\n# body\n',
+                f'---\nid: {kit_id}\nversion: "1.0.0"\n---\n# body\n',
                 encoding="utf-8",
             )
             skill_dir = root / "skills" / kit_id
@@ -103,7 +104,7 @@ class PromptSyncGateTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (root / "docs" / "ai-kit" / f"{slug}.md").write_text(
-                f"import p from '../../prompts/{kit_id}.prompt.md?raw'\nv0.1.0\n",
+                f"import p from '../../prompts/{kit_id}.prompt.md?raw'\nv1.0.0\n",
                 encoding="utf-8",
             )
 
@@ -124,13 +125,85 @@ class PromptSyncGateTests(unittest.TestCase):
     def test_detects_version_mismatch(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            self._create_valid_kits(root, skill_version="0.2.0")
+            self._create_valid_kits(root, skill_version="1.1.0")
             errors = check_prompt_sync.check_sync(root)
             self.assertTrue(any("version-mismatch" in e for e in errors))
 
     def test_real_repository_passes_cli(self) -> None:
         proc = subprocess.run(
             [sys.executable, str(SCRIPTS_DIR / "check_prompt_sync.py"), "--root", str(REPO_ROOT)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
+
+
+class ReadabilityGateTests(unittest.TestCase):
+    def _create_valid_docs(self, root: Path) -> None:
+        guide_dir = root / "docs" / "guide"
+        toolkit_dir = root / "docs" / "toolkit"
+        guide_dir.mkdir(parents=True)
+        toolkit_dir.mkdir(parents=True)
+        valid_week = (
+            "# Week\n\n"
+            "```mermaid\nflowchart LR\n  A --> B\n```\n\n"
+            "免费外部科普资源\n\n"
+            "<details><summary>1</summary>a</details>\n"
+            "<details><summary>2</summary>b</details>\n"
+            "<details><summary>3</summary>c</details>\n\n"
+            "使用 arch-tutor 与 arch-examiner。\n"
+        )
+        for filename in check_readability_gate.WEEK_FILES:
+            (guide_dir / filename).write_text(valid_week, encoding="utf-8")
+        terms = "\n".join(
+            f"### {i}. 术语{i} {{#term-{i}}}\n- 一句话生活类比：类比{i}\n"
+            for i in range(1, 18)
+        )
+        (toolkit_dir / "glossary.md").write_text(f"# 术语表\n\n{terms}", encoding="utf-8")
+
+    def test_clean_docs_pass_readability_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._create_valid_docs(root)
+            self.assertEqual(check_readability_gate.check_readability(root), [])
+
+    def test_blocks_placeholder_phrase(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._create_valid_docs(root)
+            p = root / "docs" / "guide" / "week-02-git-truth.md"
+            p.write_text(p.read_text(encoding="utf-8") + "\n预习导览版\n", encoding="utf-8")
+            errors = check_readability_gate.check_readability(root)
+            self.assertTrue(any("placeholder-found" in e for e in errors))
+
+    def test_blocks_missing_mermaid_and_insufficient_details(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._create_valid_docs(root)
+            (root / "docs" / "guide" / "week-03-oop-layers.md").write_text(
+                "# 缺少图表与自检题\n免费课程 arch-tutor\n<details>1</details>\n",
+                encoding="utf-8",
+            )
+            errors = check_readability_gate.check_readability(root)
+            self.assertTrue(any("missing-mermaid" in e for e in errors))
+            self.assertTrue(any("insufficient-self-checks" in e for e in errors))
+
+    def test_blocks_mermaid_br_html_tag(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._create_valid_docs(root)
+            (root / "docs" / "guide" / "week-04-concurrency-guard.md").write_text(
+                "```mermaid\nflowchart LR\n  A[\"a<br/>b\"] --> B\n```\n"
+                "免费 arch-tutor\n<details>1</details><details>2</details><details>3</details>\n",
+                encoding="utf-8",
+            )
+            errors = check_readability_gate.check_readability(root)
+            self.assertTrue(any("mermaid-html-tag" in e for e in errors))
+
+    def test_real_repository_passes_cli(self) -> None:
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPTS_DIR / "check_readability_gate.py"), "--root", str(REPO_ROOT)],
             capture_output=True,
             text=True,
             check=False,

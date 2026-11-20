@@ -1,0 +1,22 @@
+{
+  "project_id": "demo-habit-tracker",
+  "authority_tier": {
+    "description": "唯一权威事实源（丢失不可恢复，必须严格版本校验与事务写入）",
+    "files": [
+      "portfolio.json",
+      "projects/demo-habit-tracker/state.json",
+      "projects/demo-habit-tracker/state-events.jsonl"
+    ],
+    "loss_impact": "致命：项目进度与历史证据链丢失"
+  },
+  "derived_tier": {
+    "description": "派生缓存与搜索索引（随时可删、随时可从权威文本一键重建）",
+    "artifacts": [
+      "derived-index.sqlite",
+      "read-model-cache.json",
+      "summary-view.md"
+    ],
+    "loss_impact": "零业务损失：触发 rebuild_derived_index() 即可恢复",
+    "write_policy": "禁止反向覆盖权威事实源"
+  }
+}

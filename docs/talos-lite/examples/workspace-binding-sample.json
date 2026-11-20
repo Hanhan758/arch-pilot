@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "classification": "PRIVATE",
+  "target_workspace_root": "<HOME>/workspace/demo-repo",
+  "bindings": [
+    {
+      "binding_id": "demo-main-checkout",
+      "binding_kind": "primary",
+      "local_path": "<HOME>/workspace/demo-repo",
+      "expected_branch": "main",
+      "task_isolation": true,
+      "daily_entry_only": false
+    },
+    {
+      "binding_id": "demo-feature-worktree",
+      "binding_kind": "worktree",
+      "local_path": "<HOME>/workspace/demo-wt-export",
+      "expected_branch": "feat/weekly-export",
+      "task_isolation": true
+    }
+  ],
+  "rule_summary": "仅主检出目录在 main 分支允许写共享状态；worktree 草稿分支严禁写共享账本"
+}

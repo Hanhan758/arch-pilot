@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "manifest_id": "manifest:demo.habit-exporter",
+  "identity": {
+    "app_id": "demo-habit-exporter",
+    "capability_id": "weekly-summary-export",
+    "display_name": "习惯周报导出插件",
+    "kind": "connected-app",
+    "version": "1.0.0",
+    "owner_project_id": "demo-habit-tracker",
+    "classification": "PUBLIC"
+  },
+  "permissions": {
+    "read_scopes": ["projects.read"],
+    "action_scopes": [],
+    "activation_mode": "per-task-confirmation",
+    "external_reads": [
+      {
+        "destination_id": "cloud-backup-sync",
+        "purpose": "仅在用户逐次确认后导出脱敏周报摘要",
+        "data_classes": ["public-summary"],
+        "credentials": false,
+        "confirmation": "per-task"
+      }
+    ]
+  },
+  "health": {
+    "signals": ["source", "storage", "workspace"],
+    "failure_mode": "fail-closed"
+  },
+  "evidence": {
+    "capability_level": "simulation-verified",
+    "refs": ["verification.md#M-03"]
+  },
+  "lifecycle": "approved",
+  "host_requirements": []
+}

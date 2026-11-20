@@ -1,0 +1,11 @@
+{
+  "description": "架构棘轮冻结基线：历史坏依赖数量只许减少，新增任意一条立即红灯拦截",
+  "ratchet_policy": "strictly_decreasing",
+  "waves": [
+    { "wave": "Wave-1", "allowed_violations": 10, "status": "frozen" },
+    { "wave": "Wave-2", "allowed_violations": 0, "status": "enforced" }
+  ],
+  "remaining_legacy_edges": [
+    "legacy/summary_helper.py -> tools/legacy_printer.py"
+  ]
+}

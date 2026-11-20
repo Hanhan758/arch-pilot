@@ -30,16 +30,16 @@ flowchart TB
     end
 
     subgraph CORE["纯业务大脑（6 大核心积木，不碰具体电脑环境）"]
-        B1["1. 状态账本<br/>State Ledger"]
-        B2["2. 待审提议箱<br/>Proposal Inbox"]
-        B3["3. 工作区边界<br/>Workspace Fence"]
-        B4["4. 不可变资产盒<br/>Immutable Asset Box"]
-        B5["5. 执行安检门<br/>Execution Guard"]
-        B6["6. 能力身份证<br/>Capability Manifest"]
+        B1["1. 状态账本 State Ledger"]
+        B2["2. 待审提议箱 Proposal Inbox"]
+        B3["3. 工作区边界 Workspace Fence"]
+        B4["4. 不可变资产盒 Immutable Asset Box"]
+        B5["5. 执行安检门 Execution Guard"]
+        B6["6. 能力身份证 Capability Manifest"]
     end
 
-    subgraph HOST["可替换底座 & 本机环境（插座后面的实现）"]
-        AD["文件草稿箱 WAL / 本机锁 / Git / 索引数据库"]
+    subgraph HOST["可替换底座与本机环境（插座后面的实现）"]
+        AD["WAL草稿箱 / 本机锁 / Git / 索引数据库"]
     end
 
     CLI --> UC
@@ -54,16 +54,18 @@ flowchart TB
 
 | 积木名称 | 生活类比 | 它死守哪条底线（不变量）？ | 对应重点周次 |
 | :--- | :--- | :--- | :--- |
-| **1. 状态账本（State Ledger）** | **病历本 + 银行流水单** | 每次修改必须核对上一版版本号；流水编号 `0, 1, 2...` 连续且带防篡改收据 | Week 1 / Week 4 |
-| **2. 待审提议箱（Proposal Inbox）** | **员工请示箱 + 老板印章** | AI 只能往箱子里投“申请单”，绝不暴露“批准盖章”功能给 AI，防自批 | Week 4 |
-| **3. 工作区边界（Workspace Fence）** | **施工隔离围栏 + 公私门禁** | 草稿分支禁止改主账本；私人配置目录与公开区严格物理隔离；禁止路径穿越 | Week 2 / Week 6 |
-| **4. 不可变资产盒（Immutable Asset Box）** | **封存成品档案袋** | 产物一旦入库编号永不复用、内容按指纹验真，坏了只能报异常或出新版 | Week 5 / Week 6 |
-| **5. 执行安检门（Execution Guard）** | **机场过安检** | 没写明任务范围就拒绝高危写操作；命中手改核心账本等禁止路径直接拦下 | Week 4 / Week 5 |
-| **6. 能力身份证（Capability Manifest）** | **新员工入职体检表** | 任何插件/工具接入前必须申报读哪些数据、是否外呼、出错是否默认关闸 | Week 3 / Week 6 |
+| **1. 状态账本（State Ledger）** | **病历本 + 银行流水单** | 每次修改必须核对上一版版本号；流水编号 `0, 1, 2...` 连续且带防篡改收据 | [Week 1](/guide/week-01-data-rules) / [Week 4](/guide/week-04-concurrency-guard) |
+| **2. 待审提议箱（Proposal Inbox）** | **员工请示箱 + 老板印章** | AI 只能往箱子里投“申请单”，绝不暴露“批准盖章”功能给 AI，防自批 | [Week 4](/guide/week-04-concurrency-guard) |
+| **3. 工作区边界（Workspace Fence）** | **施工隔离围栏 + 公私门禁** | 草稿分支禁止改主账本；私人配置目录与公开区严格物理隔离；禁止路径穿越 | [Week 2](/guide/week-02-git-truth) / [Week 6](/guide/week-06-packaging-boundary) |
+| **4. 不可变资产盒（Immutable Asset Box）** | **封存成品档案袋** | 产物一旦入库编号永不复用、内容按指纹验真，坏了只能报异常或出新版 | [Week 5](/guide/week-05-tdd-migration) / [Week 6](/guide/week-06-packaging-boundary) |
+| **5. 执行安检门（Execution Guard）** | **机场过安检** | 没写明任务范围就拒绝高危写操作；命中手改核心账本等禁止路径直接拦下 | [Week 4](/guide/week-04-concurrency-guard) / [Week 5](/guide/week-05-tdd-migration) |
+| **6. 能力身份证（Capability Manifest）** | **新员工入职体检表** | 任何插件/工具接入前必须申报读哪些数据、是否外呼、出错是否默认关闸 | [Week 3](/guide/week-03-oop-layers) / [Week 6](/guide/week-06-packaging-boundary) |
 
 ---
 
-## 4. 下一步建议
+## 4. 延伸实战与全量样板入口
 
-- 如果你是第 1 周刚开始，先点开 [Week 1：数据与规则地基](/guide/week-01-data-rules)，看看上面的“1 号积木”在最小数据文件里长什么样。
-- 如果你已经看懂大概分工，想直接查陌生词汇，去 [大白话术语翻译表](/toolkit/glossary)。
+- **看懂真实系统怎么拆坏依赖**：[实战复盘：如何把双向耦合的旧底座无损切成单向分层？](/talos-lite/refactor-walkthrough)
+- **一站翻阅全书全部示例文件**：[TALOS-Lite 全量 9 份脱敏教学样板速查手册](/talos-lite/examples-index)
+- **从第 1 周按步精读**：[Week 1：数据与规则地基](/guide/week-01-data-rules)
+- **随时查陌生黑话**：[大白话术语翻译表](/toolkit/glossary)

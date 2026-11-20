@@ -1,0 +1,20 @@
+{
+  "proposal_id": "P-20261121T020000Z-a1b2c3d4",
+  "domain": "projects",
+  "action": "update_progress",
+  "target_key": "demo-habit-tracker",
+  "consumer": "assistant-mcp-client",
+  "expected_revision": 4,
+  "expected_portfolio_revision": 12,
+  "patch": {
+    "summary": "已完成周报导出边界检查，等待总控人工确认落账。",
+    "next_action": {
+      "action": "运行回归测试并核对打包边界",
+      "completion_signal": "全量自动化测试通过"
+    }
+  },
+  "request_sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "status": "pending",
+  "allowed_approver": "local-owner-only",
+  "note": "MCP 端只允许投递 pending 提议，禁止直接落账或自批"
+}
