@@ -1,0 +1,19 @@
+{
+  "$schema": "./state-schema-sample.json",
+  "schema_version": 3,
+  "project_id": "demo-habit-tracker",
+  "revision": 4,
+  "status": "active",
+  "priority": "P1",
+  "summary": "每日习惯打卡小工具：已完成基础记录流，待补全周报导出边界校验。",
+  "active_outcome": {
+    "outcome_id": "DEMO.HABIT.CORE.V1",
+    "title": "打卡记录不丢失、多端不写花",
+    "status": "in_progress"
+  },
+  "next_action": {
+    "action": "为导出功能补充只读路径检查与 2 条异常用例",
+    "completion_signal": "自动化测试全部通过且无路径越界"
+  },
+  "last_updated": "2026-11-21"
+}

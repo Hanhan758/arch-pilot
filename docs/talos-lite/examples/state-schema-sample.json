@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TALOS-Lite Demo Project State Schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project_id",
+    "revision",
+    "status",
+    "active_outcome",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 3 },
+    "project_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "revision": { "type": "integer", "minimum": 0 },
+    "status": {
+      "enum": ["planned", "active", "blocked", "completed", "archived"]
+    },
+    "priority": { "enum": ["P0", "P1", "P2", "P3"] },
+    "summary": { "type": "string", "maxLength": 300 },
+    "active_outcome": {
+      "type": "object",
+      "required": ["outcome_id", "title", "status"],
+      "properties": {
+        "outcome_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["planned", "in_progress", "verified"] }
+      },
+      "additionalProperties": false
+    },
+    "next_action": {
+      "type": "object",
+      "required": ["action", "completion_signal"],
+      "properties": {
+        "action": { "type": "string", "minLength": 1 },
+        "completion_signal": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "last_updated": { "type": "string", "format": "date" }
+  },
+  "additionalProperties": false
+}
