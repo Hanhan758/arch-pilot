@@ -3,6 +3,7 @@
 > **让不懂代码的人，也能看懂 AI 交上来的架构方案、抓出工程暗坑、稳稳当好自己的技术总控。**
 >
 > - **在线文档站（GitHub Pages）**：https://hanhan758.github.io/arch-pilot/
+> - **详细使用说明书**：https://hanhan758.github.io/arch-pilot/guide/user-manual
 > - **开源仓库**：https://github.com/Hanhan758/arch-pilot
 
 在 AI 编程时代，零基础用户最容易遇到的痛点，往往不是“不会写 `for` 循环”，而是：

@@ -24,6 +24,7 @@ export default withMermaid(
             text: '起步与常见疑问',
             items: [
               { text: '零基础总控避坑指南', link: '/guide/start' },
+              { text: '保姆级详细使用说明', link: '/guide/user-manual' },
               { text: '高频 12 问 FAQ', link: '/guide/faq' }
             ]
           },
