@@ -1,6 +1,9 @@
 # ArchPilot —— AI 时代零基础架构思维与工程总控开源指南（v1.0）
 
 > **让不懂代码的人，也能看懂 AI 交上来的架构方案、抓出工程暗坑、稳稳当好自己的技术总控。**
+>
+> - **在线文档站（GitHub Pages）**：https://hanhan758.github.io/arch-pilot/
+> - **开源仓库**：https://github.com/Hanhan758/arch-pilot
 
 在 AI 编程时代，零基础用户最容易遇到的痛点，往往不是“不会写 `for` 循环”，而是：
 - 刚让 AI 做出原型很快，加了几个功能就开始“改一处崩三处”；
@@ -62,4 +65,4 @@ arch-pilot/
 ## 开源双协议
 
 - **代码、CI 脚本、前端组件、Prompt 与 Skill 模板**：采用 [MIT License](LICENSE-CODE) 开源。
-- **教程文档与图解内容（`docs/`）**：采用 [CC BY-SA 4.0](LICENSE-CONTENT) 开源共享。
+- **教程文档与图解内容（`docs/`）**：采用 [CC BY-NC 4.0](LICENSE-CONTENT) 共享（署名-非商业性使用）。

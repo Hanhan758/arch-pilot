@@ -3,6 +3,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid(
   defineConfig({
+    base: '/arch-pilot/',
     lang: 'zh-CN',
     title: 'ArchPilot',
     description: 'AI 时代零基础架构思维与工程总控开源指南',
@@ -77,9 +78,12 @@ export default withMermaid(
         ]
       },
       footer: {
-        message: '代码与 Skill 基于 MIT 协议开源，教程文本基于 CC BY-SA 4.0 共享',
+        message: '代码与 Skill 基于 MIT 协议开源，教程文本基于 CC BY-NC 4.0 共享（非商业使用）',
         copyright: 'ArchPilot v1.0 · AI 时代零基础架构思维开源指南'
       },
+      socialLinks: [
+        { icon: 'github', link: 'https://github.com/Hanhan758/arch-pilot' }
+      ],
       search: {
         provider: 'local',
         options: {
